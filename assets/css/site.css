@@ -1,0 +1,1123 @@
+/* Daocheng Lin — personal site. A ledger in Nippon Colors: Kachi ink on Gofun paper, dashed Urayanagi highlights, quiet green-grey cards,
+   ultra-light Jost, tracked JetBrains Mono labels, Lora for the literary moments, hairlines only. */
+
+@font-face {
+  font-family: "Jost";
+  src: url("../fonts/jost-latin.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Jost";
+  src: url("../fonts/jost-latin-ext.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("../fonts/jetbrains-mono-latin.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Lora";
+  src: url("../fonts/lora-latin.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Lora";
+  src: url("../fonts/lora-italic-latin.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+:root {
+  color-scheme: light;
+
+  /* Nippon Colors (nipponcolors.com): Gofun paper, an Urayanagi highlighter, and green and blue
+     greys for text. The ambient yellow-green is derived in OKLCH from Mushikuri #d9cd90:
+     lightness +4.5 points, hue turned halfway toward Urayanagi (98° → 114°), chroma softened
+     to 0.072, then stepped lighter and deeper at the same hue. Ratios are against the paper. */
+  --paper: #fcfaf2;        /* Gofun 胡粉: the page */
+  --paper-2: #f1f2e5;      /* card, oklch(95.8% 0.018 110): a step darker and greener than Gofun */
+  --paper-2-hover: #eaefcd; /* card hover, oklch(94% 0.045 114): the yellow-green wash */
+  --paper-3: #f1f2e5;      /* card tone: image wells and placeholders */
+  --ink: #08192d;          /* Kachi 褐: text, rules, the only dark accent; 16.9:1 */
+  --graphite: #465d4c;     /* Onando-cha 御納戸茶: secondary text; 6.9:1 (6.0:1 on cards) */
+  --graphite-2: #566c73;   /* Ai-nezumi 藍鼠: labels and tertiary text; 5.3:1 */
+  --graphite-3: #808f7c;   /* Yanagi-nezumi 柳鼠: decorative marks only, never text */
+  --hair: #dcdcc8;         /* oklch(89% 0.028 108): faint hairline between entries */
+  --hair-strong: #bcbda3;  /* oklch(79% 0.035 108): link underline at rest, timeline spine */
+  --figure-tone: #d9e0aa;  /* ambient green, oklch(88.9% 0.072 114): faint cast on resting publication figures */
+  --figure-tint: 0.3;      /* strength of that cast over the greyscale figure */
+  --mark: #b5caa0;         /* Urayanagi 裏柳: dashed highlight underline and text selection */
+  --mark-ink: #08192d;     /* Kachi: highlighted text and text on a selection (10.0:1) */
+
+  --sans: "Jost", "Futura", "Avenir Next", system-ui, sans-serif;
+  --serif: "Lora", Georgia, serif;
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --gutter: clamp(16px, 4vw, 56px);
+  --top: 48px;             /* shared top line for portrait and section index */
+  --grid: repeat(12, minmax(0, 1fr));  /* every row in the main column sits on this grid */
+  --grid-gap: 20px;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Base ------------------------------------------------------------------ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: 64px;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 1rem;
+  font-weight: 350;
+  line-height: 1.6;
+  font-kerning: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+a {
+  color: inherit;
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--hair-strong);
+  text-underline-offset: 0.24em;
+  transition: color 0.2s ease, text-decoration-color 0.2s ease, opacity 0.2s ease;
+}
+
+a:hover {
+  text-decoration-color: var(--ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: var(--mark);
+  color: var(--mark-ink);
+}
+
+cite {
+  font-family: var(--serif);
+  font-style: italic;
+}
+
+abbr[title] {
+  text-decoration: none;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.emoji {
+  display: inline-block;
+  margin-right: 0.45em;
+  font-style: normal;
+  line-height: 1;
+}
+
+.ico {
+  display: inline-block;
+  width: 0.95em;
+  height: 0.95em;
+  margin-left: 0.35em;
+  vertical-align: -0.12em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.3;
+  stroke-linecap: square;
+  transition: transform 0.35s var(--ease-out);
+}
+
+a:hover .ico {
+  transform: translate(1px, -1px);
+}
+
+.more a:hover .ico {
+  transform: translateY(1px);
+}
+
+/* The ledger's label voice: tracked uppercase mono. */
+.role,
+.index a,
+time,
+.when,
+.code,
+.tag,
+.links,
+.more,
+.colophon {
+  font-family: var(--mono);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.skip {
+  position: absolute;
+  left: var(--gutter);
+  top: 0;
+  z-index: 20;
+  padding: 10px 14px;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transform: translateY(-120%);
+}
+
+.skip:focus {
+  transform: none;
+}
+
+/* Page grid -------------------------------------------------------------- */
+
+.page {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+main {
+  min-width: 0;
+  max-width: 860px;
+  padding-bottom: 56px;
+  container-type: inline-size;
+}
+
+main:focus {
+  outline: none;
+}
+
+/* Profile column --------------------------------------------------------- */
+
+.profile-inner {
+  padding: 32px 0 8px;
+}
+
+.ident {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.portrait {
+  flex: none;
+  width: 88px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: 50% 40%;
+  background: var(--paper-3);
+}
+
+.name {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 300;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+/* The Chinese name: half the name's size, so it follows the name's breakpoint steps.
+   The fonts carry no CJK glyphs, so it names a system CJK sans with a light weight. */
+.name-zh {
+  display: block;
+  margin-top: 0.4em;
+  color: var(--graphite);
+  font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Source Han Sans SC", "Microsoft YaHei", var(--sans);
+  font-size: 0.5em;
+  font-weight: 300;
+  letter-spacing: 0.12em;
+}
+
+.role {
+  margin: 10px 0 0;
+  color: var(--graphite-2);
+  font-size: 0.6875rem;
+  line-height: 1.6;
+}
+
+.role span {
+  display: block;
+}
+
+.bio {
+  margin-top: 24px;
+  font-size: 0.96875rem;
+  line-height: 1.65;
+}
+
+.bio p {
+  margin: 0 0 0.85em;
+}
+
+.bio p:last-child {
+  margin-bottom: 0;
+}
+
+/* Highlights are a dashed underline in Urayanagi (after CSS-Tricks, "Styling Underlines
+   for the Web"), set below the descenders so it never crowds the letters. */
+mark {
+  background: none;
+  color: var(--mark-ink);
+  font-weight: 450;
+  text-decoration-line: underline;
+  text-decoration-style: dashed;
+  text-decoration-color: var(--mark);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.28em;
+  text-decoration-skip-ink: none;
+}
+
+/* A highlighted link: the dashed highlight stands in for the link underline and
+   darkens to ink on hover, as a link underline does. */
+a:has(> mark) {
+  text-decoration-line: none;
+}
+
+a:hover > mark {
+  text-decoration-color: var(--ink);
+}
+
+/* CV, email, and the social icons sit together under the ledger's short rule. */
+.contact {
+  margin-top: 24px;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+.contact::before {
+  content: "";
+  display: block;
+  width: 36px;
+  height: 1px;
+  margin-bottom: 16px;
+  background: var(--ink);
+}
+
+.contact p {
+  margin: 0 0 6px;
+}
+
+.contact-line {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Drawn in solid ink to match the GitHub and LinkedIn marks; paper-coloured cuts carry the detail. */
+.glyph {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+.glyph .cut {
+  fill: none;
+  stroke: var(--paper);
+  stroke-width: 1.4;
+  stroke-linecap: square;
+}
+
+.social {
+  display: flex;
+  gap: 16px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.social a {
+  display: block;
+  color: var(--ink);
+}
+
+.social a:hover {
+  color: var(--graphite);
+}
+
+.social svg {
+  display: block;
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+/* Section index ---------------------------------------------------------- */
+
+.index {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  margin-top: 32px;
+  background: var(--paper);
+  border-bottom: 1px solid var(--hair);
+}
+
+/* Frosted glass, after impeccable.style's header: translucent paper over a 12px blur,
+   with a hairline in ink at 12%. Falls back to solid paper where blur is unsupported. */
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .index {
+    background: rgb(252 250 242 / 0.88);
+    border-bottom-color: rgb(8 25 45 / 0.1);
+    -webkit-backdrop-filter: blur(12px) saturate(1.15);
+    backdrop-filter: blur(12px) saturate(1.15);
+  }
+}
+
+.index ul {
+  display: flex;
+  gap: clamp(12px, 2.6vw, 30px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  white-space: nowrap;
+}
+
+.index a {
+  display: block;
+  padding: 15px 0 13px;
+  color: var(--graphite);  /* one step darker than other labels: it sits on glass */
+  font-size: 0.6875rem;
+  text-decoration: none;
+}
+
+.index a:hover,
+.index a[aria-current] {
+  color: var(--ink);
+}
+
+.index .short {
+  display: none;
+}
+
+.index-bar {
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 0;
+  height: 2px;
+  background: var(--ink);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform 0.55s var(--ease-out),
+    width 0.55s var(--ease-out),
+    opacity 0.2s ease;
+}
+
+.index-bar.no-anim {
+  transition: none;
+}
+
+/* Phones: short labels keep all five items on one line. */
+@media (max-width: 559px) {
+  .index .long {
+    display: none;
+  }
+
+  .index .short {
+    display: inline;
+  }
+}
+
+@media (max-width: 359px) {
+  .index ul {
+    gap: 10px;
+  }
+
+  .index a {
+    letter-spacing: 0.05em;
+  }
+}
+
+/* Sections --------------------------------------------------------------- */
+
+/* Margin, not padding, so an index jump lands the heading just under the sticky index. */
+.section {
+  margin-top: clamp(56px, 7vw, 88px);
+}
+
+.index + .section {
+  margin-top: 36px;
+}
+
+/* Headings: light Jost, opened by the ledger's 36px rule instead of a full-width line. */
+.section > h2 {
+  margin: 0 0 clamp(18px, 2.4vw, 26px);
+  font-size: clamp(1.5rem, 1.25rem + 0.8vw, 1.875rem);
+  font-weight: 300;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+.section > h2::before {
+  content: "";
+  display: block;
+  width: 36px;
+  height: 1px;
+  margin-bottom: 16px;
+  background: var(--ink);
+}
+
+/* News & Travels opens without the short rule; its timeline carries the structure. */
+.section-news > h2::before {
+  content: none;
+}
+
+.section-lede {
+  margin: 0 0 16px;
+  color: var(--graphite);
+  font-size: 0.9375rem;
+}
+
+/* Rows: each one sits on the 12-column grid; faint hairlines between entries. */
+
+.news,
+.pubs,
+.courses {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pubs > li,
+.courses > li {
+  display: grid;
+  grid-template-columns: var(--grid);
+  column-gap: var(--grid-gap);
+  padding: 18px 0 20px;
+}
+
+.pubs > li + li,
+.courses > li + li,
+.courses {
+  border-top: 1px solid var(--hair);
+}
+
+.pubs > li:first-child {
+  padding-top: 2px;
+}
+
+/* Label column (dates, course codes): tracked mono in graphite. */
+time,
+.when,
+.code {
+  color: var(--graphite-2);
+  font-size: 0.6875rem;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+/* News & Travels: short, quiet one-liners. */
+
+.news > li {
+  display: grid;
+  grid-template-columns: var(--grid);
+  column-gap: var(--grid-gap);
+  align-items: baseline;
+  padding: 5px 0;
+}
+
+.news time {
+  grid-column: 1 / span 2;
+}
+
+.news p {
+  grid-column: 3 / -1;
+  margin: 0;
+  font-size: 0.96875rem;
+  line-height: 1.55;
+}
+
+.more {
+  margin: 14px 0 0;
+  padding-left: calc((100% - 11 * var(--grid-gap)) / 12 * 2 + 2 * var(--grid-gap));
+  font-size: 0.6875rem;
+}
+
+.more a,
+.links a {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.more a:hover,
+.links a:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--ink);
+}
+
+/* Publications: thumbnail rows. */
+
+.pub {
+  align-items: start;
+}
+
+.pub-figure {
+  grid-column: 1 / span 4;
+  margin: 0;
+}
+
+.pub-figure figcaption {
+  margin-top: 8px;
+  color: var(--graphite-2);
+  font-size: 0.75rem;
+  line-height: 1.45;
+}
+
+.pub-body {
+  grid-column: 5 / -1;
+}
+
+.pub-thumb,
+.project-shot {
+  display: block;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--paper-3);
+}
+
+.pub-thumb {
+  margin-top: 4px;
+  outline: 1px solid rgb(8 25 45 / 0.1);
+  outline-offset: -1px;
+}
+
+.pub-thumb img,
+.project-shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s var(--ease-out);
+}
+
+/* Project screenshots print onto the paper: multiply turns their white fields into the
+   cream of the well. Publication figures keep their true colour. */
+.project-shot {
+  isolation: isolate;
+}
+
+.project-shot img {
+  mix-blend-mode: multiply;
+}
+
+/* Publication figures and project screenshots rest in greyscale with a faint cast of the ambient
+   green, and return to their own colour when their row or card is hovered or one of its links
+   has focus. The picture is desaturated, then a colour-blend layer of the figure tone tints it
+   lightly. Project screenshots also print onto their well (multiply); on hover the well turns
+   white, which leaves the picture untouched, so the Tufte screenshot shows its own #fffef8 paper.
+   Only on devices that can hover, so touch screens always see the original colour. */
+@media (hover: hover) {
+  .pub-thumb,
+  .project-shot {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .pub-thumb img,
+  .project-shot img {
+    filter: grayscale(1);
+    transition:
+      transform 0.7s var(--ease-out),
+      filter 0.5s ease;
+  }
+
+  .pub-thumb::after,
+  .project-shot::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--figure-tone);
+    mix-blend-mode: color;
+    opacity: var(--figure-tint);
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+  }
+
+  .project-shot {
+    transition: background-color 0.5s ease;
+  }
+
+  .pub:hover .pub-thumb img,
+  .pub:focus-within .pub-thumb img,
+  .project:hover .project-shot img,
+  .project:focus-within .project-shot img {
+    filter: none;
+  }
+
+  .pub:hover .pub-thumb::after,
+  .pub:focus-within .pub-thumb::after,
+  .project:hover .project-shot::after,
+  .project:focus-within .project-shot::after {
+    opacity: 0;
+  }
+
+  .project:hover .project-shot,
+  .project:focus-within .project-shot {
+    background-color: #ffffff;
+  }
+}
+
+.pub-title {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.tag {
+  display: inline-block;
+  white-space: nowrap;
+  margin-right: 0.6em;
+  padding: 0.32em 0.6em 0.3em;
+  font-size: 0.6875rem;
+  line-height: 1;
+  vertical-align: 0.18em;
+}
+
+.tag-journal {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.tag-conference {
+  box-shadow: inset 0 0 0 1px var(--ink);
+  color: var(--ink);
+}
+
+.pub-authors {
+  margin: 8px 0 0;
+  color: var(--graphite);
+  font-size: 0.96875rem;
+}
+
+.me {
+  color: var(--ink);
+  font-weight: 450;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.24em;
+}
+
+.pub-venue {
+  margin: 2px 0 0;
+  color: var(--graphite);
+  font-size: 0.9375rem;
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 24px;
+  margin: 12px 0 0;
+  font-size: 0.6875rem;
+}
+
+/* Teaching: course code, then title. */
+
+.courses > li {
+  align-items: baseline;
+}
+
+.code {
+  grid-column: 1 / span 2;
+  margin: 0;
+}
+
+.course-body {
+  grid-column: 3 / -1;
+}
+
+.course-title {
+  margin: 0;
+  font-size: 1.0625rem;
+  font-weight: 400;
+  line-height: 1.45;
+}
+
+.course-note {
+  margin: 4px 0 0;
+  max-width: 62ch;
+  color: var(--graphite);
+  font-size: 0.9375rem;
+}
+
+/* Selected projects: cards, six columns each, on a slightly deeper cream. */
+
+.projects {
+  display: grid;
+  grid-template-columns: var(--grid);
+  gap: 24px var(--grid-gap);
+}
+
+.project {
+  grid-column: span 6;
+  display: flex;
+  flex-direction: column;
+  background: var(--paper-2);
+  transition: background-color 0.3s ease;
+}
+
+.project:hover {
+  background: var(--paper-2-hover);
+}
+
+.project:hover .project-shot img,
+.pub:hover .pub-thumb img {
+  transform: scale(1.025);
+}
+
+.project-title {
+  margin: 18px 20px 0;
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1.25;
+}
+
+.project-title a {
+  text-decoration: none;
+}
+
+.project-title a:hover {
+  text-decoration: underline;
+}
+
+.project-note {
+  margin: 8px 20px 0;
+  color: var(--graphite);
+  font-size: 0.9375rem;
+}
+
+.project .links {
+  margin: auto 20px 0;
+  padding: 14px 0 18px;
+}
+
+/* News & Travels runs on the ledger's vertical timeline: a faint spine with an ink dot
+   at each entry, ringed in paper so it sits on the line. */
+
+.timeline {
+  position: relative;
+}
+
+/* site.js sets --spine-top and --spine-bottom so the line runs from the first dot to the last. */
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: var(--spine-top, 10px);
+  bottom: var(--spine-bottom, 10px);
+  width: 1px;
+  background: var(--hair-strong);
+}
+
+.timeline > li {
+  padding: 8px 0;
+}
+
+.when {
+  position: relative;
+  padding-left: 22px;
+}
+
+.when::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: calc(0.75em - 4.5px);
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--ink);
+  outline: 3px solid var(--paper);
+}
+
+/* Conference presentations: the full record, set in the compact News format. */
+
+.records > li {
+  padding: 7px 0;
+}
+
+.talk-title {
+  color: var(--ink);
+}
+
+.talk-meta {
+  color: var(--graphite);
+}
+
+.colophon {
+  margin-top: clamp(64px, 9vw, 104px);
+  padding-top: 14px;
+  border-top: 1px solid var(--hair);
+  color: var(--graphite-2);
+  font-size: 0.6875rem;
+  line-height: 1.6;
+}
+
+.colophon p {
+  margin: 0;
+}
+
+/* Main column under ~560px: rows stack. */
+@container (max-width: 560px) {
+  .news > li,
+  .pubs > li,
+  .courses > li,
+  .projects {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .news > li {
+    padding: 7px 0;
+  }
+
+  .pubs > li {
+    row-gap: 14px;
+  }
+
+  .courses > li {
+    row-gap: 4px;
+  }
+
+  .news time,
+  .news p,
+  .pub-figure,
+  .pub-body,
+  .code,
+  .course-body,
+  .project {
+    grid-column: 1;
+  }
+
+  .more {
+    padding-left: 0;
+  }
+
+  .pub-thumb {
+    margin-top: 0;
+  }
+
+  .timeline p {
+    padding-left: 22px;
+  }
+}
+
+/* Wide screens: profile column on the left ------------------------------- */
+
+@media (min-width: 1024px) {
+  .page {
+    display: grid;
+    grid-template-columns: clamp(272px, 27vw, 340px) minmax(0, 1fr);
+    column-gap: clamp(40px, 5vw, 96px);
+    align-items: start;
+  }
+
+  .profile-inner {
+    padding: var(--top) 0 32px;
+  }
+
+  .ident {
+    display: block;
+  }
+
+  .portrait {
+    width: 136px;
+  }
+
+  .name {
+    margin-top: 24px;
+    font-size: 2.25rem;
+  }
+
+  .bio {
+    margin-top: 22px;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+  }
+
+  .contact {
+    margin-top: 22px;
+  }
+
+  main {
+    padding-top: calc(var(--top) - 15px);
+  }
+
+  .index {
+    margin-top: 0;
+  }
+
+  /* The first section sits beside the profile, so jumping to it scrolls to the very top. */
+  .index + .section {
+    scroll-margin-top: 100vh;
+  }
+
+  /* The timeline hangs in the column gap, so its dates stay on the grid's first line. */
+  .timeline::before {
+    left: -18px;
+  }
+
+  .when {
+    padding-left: 0;
+  }
+
+  .when::before {
+    left: -22px;
+  }
+
+  /* site.js pins the profile and sets a negative top when it is taller than the window. */
+  .profile.is-pinned {
+    position: sticky;
+    top: 0;
+  }
+}
+
+@media (min-width: 1280px) {
+  .portrait {
+    width: 152px;
+  }
+
+  .name {
+    margin-top: 26px;
+    font-size: 2.625rem;
+  }
+
+  .bio {
+    margin-top: 24px;
+    font-size: 0.96875rem;
+    line-height: 1.65;
+  }
+
+  .contact {
+    margin-top: 24px;
+  }
+}
+
+/* Short laptop windows: tighten the profile so the contact group stays in the first viewport. */
+@media (min-width: 1024px) and (max-height: 820px) {
+  :root {
+    --top: 40px;
+  }
+
+  .portrait {
+    width: 112px;
+  }
+
+  .name {
+    margin-top: 18px;
+  }
+
+  .bio {
+    margin-top: 18px;
+    font-size: 0.9375rem;
+    line-height: 1.55;
+  }
+
+  .contact {
+    margin-top: 18px;
+  }
+}
+
+@media (min-width: 1024px) and (max-height: 700px) {
+  :root {
+    --top: 32px;
+  }
+
+  .portrait {
+    width: 88px;
+  }
+
+  .contact::before {
+    margin-bottom: 12px;
+  }
+
+  .contact p {
+    margin-bottom: 2px;
+  }
+
+  .social {
+    margin-top: 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media print {
+  .index,
+  .skip {
+    display: none;
+  }
+
+  .page {
+    display: block;
+  }
+
+  .section {
+    break-inside: avoid-page;
+  }
+}

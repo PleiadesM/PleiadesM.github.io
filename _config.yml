@@ -1,0 +1,6 @@
+# GitHub Pages copies the static site as-is; keep project notes out of the published output.
+exclude:
+  - README.md
+  - PRODUCT.md
+  - DESIGN.md
+  - "assets/img/*.json"
